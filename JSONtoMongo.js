@@ -10,11 +10,30 @@ var fs = require('fs'),
     config = require('./config');
 
 /* Connect to your database */
-
+mongoose.connect('mongodb://tasellos:8uhb*UHBb@ds129024.mlab.com:29024/cen3031assignment3');
 /* 
   Instantiate a mongoose model for each listing object in the JSON file, 
   and then save it to your Mongo database 
  */
+fs.readFile('listings.json', '', function (err, data) {
+    if (err) {
+        throw err,
+    }
+    var ufListing = mongoose.model('Listing', Listing.listingSchema);
+    JSON.parse(data).entries.forEach(function (listing) {
+        var listing = new ufListing({
+            code: listing.code,
+            name: listing.name,
+            latitude: listing.latitude,
+            longitude: listing.longitude,
+            address: listing.address,
+        });
+        listing.save(function (err) {
+            if (err)
+                throw err;
+        });
+    });
+});
 
 
 /* 
