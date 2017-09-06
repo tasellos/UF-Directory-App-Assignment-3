@@ -4,10 +4,10 @@
   Make sure to save your DB's uri in the config file, then import it with a require statement!
  */
 var fs = require('fs'),
+    config = require('./config.js');
     mongoose = require('mongoose'), 
     Schema = mongoose.Schema, 
     Listing = require('./ListingSchema.js'), 
-    config = require('./config');
 
 /* Connect to your database */
 mongoose.connect('mongodb://tasellos:8uhb*UHBb@ds129024.mlab.com:29024/cen3031assignment3');
@@ -15,10 +15,10 @@ mongoose.connect('mongodb://tasellos:8uhb*UHBb@ds129024.mlab.com:29024/cen3031as
   Instantiate a mongoose model for each listing object in the JSON file, 
   and then save it to your Mongo database 
  */
-fs.readFile('listings.json', '', function (err, data) {
-    if (err) {
-        throw err,
-    }
+fs.readFile('listings.json', 'utf8', function (err, data) {
+    if (err)
+        throw err;
+    
     var ufListing = mongoose.model('Listing', Listing.listingSchema);
     JSON.parse(data).entries.forEach(function (listing) {
         var listing = new ufListing({
